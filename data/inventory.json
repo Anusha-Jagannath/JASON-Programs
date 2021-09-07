@@ -1,0 +1,22 @@
+{
+"inventory":[
+{
+"type":"rice",
+"name":"basmati",
+"weight":15.5,
+"pricePerKg":60.80
+},
+{
+"type":"wheat",
+"name":"brand wheat",
+"weight":10.80,
+"pricePerKg":40.50
+},
+{
+"type":"pulses",
+"name":"yellow pulse",
+"weight":5.5,
+"pricePerKg":10.26
+},
+]
+}
