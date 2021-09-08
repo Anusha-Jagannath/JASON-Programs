@@ -17,8 +17,11 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class StockAccountMain {
+public class StockPortfolio {
 	public static void main(String[] args) {
+		
+		
+		double totalShares = 0;
 		Map<String, Double> map = new HashMap<>();
 		JSONParser jsonParser = new JSONParser();
 		try {
@@ -34,9 +37,11 @@ public class StockAccountMain {
 				String name = (String) jsonObject2.get("name");
 				double noOfShares = (double) jsonObject2.get("noOfShares");
 				double price = (double) jsonObject2.get("sharePrice");
-				System.out.println("Name: " + name + " No of shares: " + noOfShares + " Price: " + price);
-				map.put(name, price * noOfShares);
+				totalShares += calculateStockValue(name,noOfShares,price,map);
+//				System.out.println("Name: " + name + " No of shares: " + noOfShares + " Price: " + price);
+//				map.put(name, price * noOfShares);
 			}
+			System.out.println("Total value is "+totalShares);
 
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -49,6 +54,18 @@ public class StockAccountMain {
 		writeJson(map);
 
 	}
+
+	
+
+	private static double calculateStockValue(String name, double noOfShares, double price, Map<String, Double> map) {
+		System.out.println("Name: " + name + " No of shares: " + noOfShares + " Price: " + price);
+		map.put(name, price * noOfShares);
+		return price*noOfShares;
+		
+		
+	}
+
+
 
 	private static void writeJson(final Map<String, Double> map) {
 		JSONArray array = new JSONArray();
@@ -70,5 +87,9 @@ public class StockAccountMain {
 		System.out.println(mainObject);
 		System.out.println(map);
 	}
+
+
+
+	
 }
 
