@@ -1,41 +1,43 @@
-package com.stock;
+package com.jason;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
-import java.io.Writer;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-public class StockAccountMain {
-	public static void main(String[] args) {
-		Map<String, Double> map = new HashMap<>();
+public class InventoryManager {
+
+	/*
+	 * method to read inventory.json file
+	 */
+	public void inventoryFactory(Map<String, Double> map) {
 		JSONParser jsonParser = new JSONParser();
 		try {
-			Reader reader = new FileReader("/Users/anushajs/eclipse-workspace/Yml-training/JSON-Programs/data/stock.json");
+			Reader reader = new FileReader(
+					"/Users/anushajs/eclipse-workspace/Yml-training/JSON-Programs/data/inventory.json");
 			JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
 			System.out.println(jsonObject);
-			JSONArray array = (JSONArray) jsonObject.get("stock");
+			JSONArray array = (JSONArray) jsonObject.get("inventory");
 			System.out.println(array);
 			Iterator<JSONObject> iterator = array.iterator();
 			while (iterator.hasNext()) {
 				JSONObject jsonObject2 = (JSONObject) iterator.next();
 				System.out.println(jsonObject2);
 				String name = (String) jsonObject2.get("name");
-				double noOfShares = (double) jsonObject2.get("noOfShares");
-				double price = (double) jsonObject2.get("sharePrice");
-				System.out.println("Name: " + name + " No of shares: " + noOfShares + " Price: " + price);
-				map.put(name, price * noOfShares);
+				System.out.println(name);
+				double price = (double) jsonObject2.get("pricePerKg");
+				double weight = (double) jsonObject2.get("weight");
+				System.out.println("Name: " + name + " price: " + price + " Weight: " + weight);
+				map.put(name, price * weight);
 			}
 
 		} catch (FileNotFoundException e) {
@@ -46,11 +48,12 @@ public class StockAccountMain {
 			e.printStackTrace();
 		}
 
-		writeJson(map);
-
 	}
+	/*
+	 * method to store data to result.json file
+	 */
 
-	private static void writeJson(final Map<String, Double> map) {
+	public void inventoryManage(Map<String, Double> map) {
 		JSONArray array = new JSONArray();
 		for (Entry<String, Double> entry : map.entrySet()) {
 			JSONObject object = new JSONObject();
@@ -61,7 +64,8 @@ public class StockAccountMain {
 		JSONObject mainObject = new JSONObject();
 		mainObject.put("results", array);
 		try {
-			FileWriter writer = new FileWriter("/Users/anushajs/eclipse-workspace/Yml-training/JSON-Programs/data/stockresult.json");
+			FileWriter writer = new FileWriter(
+					"/Users/anushajs/eclipse-workspace/Yml-training/JSON-Programs/data/result.json");
 			writer.write(mainObject.toJSONString());
 			writer.flush();
 		} catch (IOException e) {
@@ -69,6 +73,7 @@ public class StockAccountMain {
 		}
 		System.out.println(mainObject);
 		System.out.println(map);
-	}
-}
 
+	}
+
+}
