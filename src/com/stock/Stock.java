@@ -2,11 +2,20 @@ package com.stock;
 
 public class Stock {
 	private String name;
+	private String symbol;
 	private double noOfShares;
 	private double sharePrice;
-	public Stock(String name, double noOfShares, double sharePrice) {
+	public String getSymbol() {
+		return symbol;
+	}
+	public void setSymbol(String symbol) {
+		this.symbol = symbol;
+	}
+	
+	public Stock(String name,String symbol, double noOfShares, double sharePrice) {
 		super();
 		this.name = name;
+		this.symbol = symbol;
 		this.noOfShares = noOfShares;
 		this.sharePrice = sharePrice;
 	}
