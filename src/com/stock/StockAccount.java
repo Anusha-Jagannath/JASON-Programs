@@ -5,8 +5,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Scanner;
@@ -14,88 +14,81 @@ import java.util.Scanner;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
-public class StockAccount {
-	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		System.out.println("1.create account\n2.Buy sales\n3.sell sales\n4.Display value\n5 Display report\n6.Exit");
-		int option = sc.nextInt();
+public class StockAccount implements ICommercial {
 
-		switch (option) {
-		case 1:
-			createAccount();
-			break;
-		}
+	List<Stock> list = new ArrayList<>();
+	String filename;
 
-		double totalShares = 0;
-		Map<String, Double> map = new HashMap<>();
-		JSONParser jsonParser = new JSONParser();
-		try {
-			Reader reader = new FileReader(
-					"/Users/anushajs/eclipse-workspace/Yml-training/JSON-Programs/data/stock.json");
-			JSONObject jsonObject = (JSONObject) jsonParser.parse(reader);
-			System.out.println(jsonObject);
-			JSONArray array = (JSONArray) jsonObject.get("stock");
-			System.out.println(array);
-			Iterator<JSONObject> iterator = array.iterator();
-			while (iterator.hasNext()) {
-				JSONObject jsonObject2 = (JSONObject) iterator.next();
-				System.out.println(jsonObject2);
-				String name = (String) jsonObject2.get("name");
-				double noOfShares = (double) jsonObject2.get("noOfShares");
-				double price = (double) jsonObject2.get("sharePrice");
-				totalShares += calculateStockValue(name, noOfShares, price, map);
-//				System.out.println("Name: " + name + " No of shares: " + noOfShares + " Price: " + price);
-//				map.put(name, price * noOfShares);
-			}
-			System.out.println("Total value is " + totalShares);
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		writeJson(map);
-
+	StockAccount(String filename) {
+		this.filename = filename;
 	}
 
-	private static double calculateStockValue(String name, double noOfShares, double price, Map<String, Double> map) {
+	@Override
+	public double valueOf(String name, double noOfShares, double price) {
 		System.out.println("Name: " + name + " No of shares: " + noOfShares + " Price: " + price);
-		map.put(name, price * noOfShares);
 		return price * noOfShares;
+	}
+
+	@Override
+	public void buy(int amount, String symbol) {
 
 	}
 
-	private static void writeJson(final Map<String, Double> map) {
-		JSONArray array = new JSONArray();
-		for (Entry<String, Double> entry : map.entrySet()) {
-			JSONObject object = new JSONObject();
-			object.put("name", entry.getKey());
-			object.put("totalPrice", entry.getValue());
-			array.add(object);
-		}
-		JSONObject mainObject = new JSONObject();
-		mainObject.put("results", array);
+	@Override
+	public void sell(int amount, String symbol) {
+
+	}
+
+	@Override
+	public void save(String filename) {
+		JSONObject jsonobject = new JSONObject();
+		JSONArray array = (JSONArray) jsonobject.get("stock");
+		Scanner sc = new Scanner(System.in);
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("Enter Stock Name : ");
+		String stockName = scanner.nextLine();
+		
+		System.out.println("Enter Stock symbol : ");
+		String stockSymbol = scanner.nextLine();
+		
+		System.out.println("Enter number of shares: ");
+		int noOfShares = sc.nextInt();
+		
+		System.out.println("Enter share price: ");
+		double sharePrice = sc.nextDouble();
+		jsonobject.put("name", stockName);
+		jsonobject.put("symbol", stockSymbol);
+		jsonobject.put("noOfShare", noOfShares);
+		jsonobject.put("sharePrice", sharePrice);
+		array.add(jsonobject);
+		jsonobject.put("stock", array);
 		try {
 			FileWriter writer = new FileWriter(
-					"/Users/anushajs/eclipse-workspace/Yml-training/JSON-Programs/data/stockresult.json");
-			writer.write(mainObject.toJSONString());
+					"/Users/anushajs/eclipse-workspace/Yml-training/JSON-Programs/data/stock.json");
+			writer.write(jsonobject.toJSONString());
 			writer.flush();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		System.out.println(mainObject);
-		System.out.println(map);
 	}
 
-	public static void createAccount() {
-		String account;
-		Scanner sc = new Scanner(System.in);
-		account = sc.nextLine();
+	@Override
+	public void printReport() {
+		JSONParser jsonparser = new JSONParser();
+		try {
+			Reader reader = new FileReader(
+					"/Users/anushajs/eclipse-workspace/Yml-training/JSON-Programs/data/stock.json");
+			JSONObject jsonObject = (JSONObject) jsonparser.parse(reader);
+			JSONArray array = (JSONArray) jsonObject.get("stock");
+			System.out.println(array);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (org.json.simple.parser.ParseException e) {
+			e.printStackTrace();
+		}
 
 	}
 
