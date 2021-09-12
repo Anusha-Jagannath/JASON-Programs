@@ -21,15 +21,19 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 public class StockPortfolio {
-	
 
+	/*
+	 * method to calculate stock price
+	 */
 	public static double calculateStockValue(String name, double noOfShares, double price, Map<String, Double> map) {
 		System.out.println("Name: " + name + " No of shares: " + noOfShares + " Price: " + price);
 		map.put(name, price * noOfShares);
 		return price * noOfShares;
-
 	}
 
+	/*
+	 * method to store stock data
+	 */
 	public static void writeJson(final Map<String, Double> map) {
 		JSONArray array = new JSONArray();
 		for (Entry<String, Double> entry : map.entrySet()) {
