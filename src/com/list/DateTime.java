@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 public class DateTime {
 
+	/*
+	 * method to add,delete,print time
+	 */
 	public void computeTime() {
 		LinkedList list = new LinkedList();
 		Boolean ch = true;

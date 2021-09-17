@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 public class CompanyShares {
 
+	/*
+	 * method to add,delete,print shares
+	 */
 	public void computeShares() {
 
 		LinkedList list = new LinkedList();
